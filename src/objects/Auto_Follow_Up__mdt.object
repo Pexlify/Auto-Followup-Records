@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Criteria_Field__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Criteria Field</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Is_User_Field__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Is User Field</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Operator__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Operator</label>
+        <picklist>
+            <picklistValues>
+                <fullName>equals</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>not equals to</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>less then</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>greater then</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>less or equal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>greater or equal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>contains</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>does not contain</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>starts with</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Record_Type__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Several values should be separated with semicolon ;</inlineHelpText>
+        <label>Record Type</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>SObject_Field__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>SObject Field</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SObject__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>SObject</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Auto Follow Up</label>
+    <pluralLabel>Auto Follows Up</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
