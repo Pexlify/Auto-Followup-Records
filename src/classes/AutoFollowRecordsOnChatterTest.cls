@@ -211,6 +211,91 @@ private class AutoFollowRecordsOnChatterTest {
         }
     }
 
+    @isTest
+    static void testDoesStringConditionPassYesItDoes() {
+        SetupTestData test_data = new SetupTestData();
+        System.runAs(test_data.TestUser) {
+            String operator = 'starts with';
+            String str_sobj_value = 'Cool Name';
+            String str_user_value = 'Cool';
+            Test.startTest();
+                Boolean actual_result = AutoFollowRecordsOnChatter.getInstance().doesStringConditionPass(operator, str_sobj_value, str_user_value);
+            Test.stopTest();
+            System.assertEquals(true, actual_result, 'String condition should be passed');
+        }
+    }
+
+    @isTest
+    static void testDoesStringConditionPassException() {
+        SetupTestData test_data = new SetupTestData();
+        System.runAs(test_data.TestUser) {
+            String operator = 'bla-bla';
+            String str_sobj_value = 'Cool Name';
+            String str_user_value = 'Cool';
+            Test.startTest();
+                String actual_exception_message = ''; 
+                try {
+                    Boolean actual_result = AutoFollowRecordsOnChatter.getInstance().doesStringConditionPass(operator, str_sobj_value, str_user_value);
+                } catch (AutoFollowRecordsOnChatter.FollowUpException ex) {
+                    actual_exception_message = ex.getMessage();
+                }
+            Test.stopTest();
+            System.assertEquals('Inapplicable logic operation for String type', actual_exception_message, 'bla-bla is not applicable operator for String type');
+        }
+    }
+
+    @isTest
+    static void testDoesDecimalConditionPassYesItDoes() {
+        SetupTestData test_data = new SetupTestData();
+        System.runAs(test_data.TestUser) {
+            String operator = 'greater or equal';
+            Decimal converted_decimal_sobj_value = 40;
+            Decimal decimal_user_value = 20;
+            Test.startTest();
+                Boolean actual_result = AutoFollowRecordsOnChatter.getInstance().doesDecimalConditionPass(operator, converted_decimal_sobj_value, decimal_user_value);
+            Test.stopTest();
+            System.assertEquals(true, actual_result, 'Decimal condition should be passed');
+        }
+    }
+
+    @isTest
+    static void testDoesDecimalConditionPassException() {
+        SetupTestData test_data = new SetupTestData();
+        System.runAs(test_data.TestUser) {
+            String operator = 'bla-bla';
+            Decimal converted_decimal_sobj_value = 40;
+            Decimal decimal_user_value = 20;
+            Test.startTest();
+                String actual_exception_message = ''; 
+                try {
+                    Boolean actual_result = AutoFollowRecordsOnChatter.getInstance().doesDecimalConditionPass(operator, converted_decimal_sobj_value, decimal_user_value);
+                } catch (AutoFollowRecordsOnChatter.FollowUpException ex) {
+                    actual_exception_message = ex.getMessage();
+                }
+            Test.stopTest();
+            System.assertEquals('Inapplicable logic operation for Decimal type', actual_exception_message, 'bla-bla is not applicable operator for Decimal type');
+        }
+    }
+
+    @isTest
+    static void testSubscribeUsersToRecordsCorrectSubscription(){
+        SetupTestData test_data = new SetupTestData();
+        System.runAs(test_data.TestUser) {
+            test_data.createTestOpportunity('Somesome');
+            test_data.updateLastNameUser('Some');
+            List<Id> records_id = new List<Id> {
+                test_data.TestOpportunity.Id
+            };
+            Test.startTest();
+                AutoFollowRecordsOnChatter.getInstance().subscribeUsersToRecords(records_id);
+            Test.stopTest();
+            List<EntitySubscription> actual_subs = [SELECT Id, ParentId, SubscriberId FROM EntitySubscription  WHERE SubscriberId = :test_data.TestUser.Id LIMIT 999];
+            System.assertEquals(1, actual_subs.size(), 'Only one subscription should exist');
+            EntitySubscription temp_sub = actual_subs.get(0);
+            System.assertEquals(test_data.TestOpportunity.Id, temp_sub.ParentId, 'Incorrect ParentId');
+        }
+    }
+
     public class SetupTestData {
         public User TestUser {get; set;}
         public Auto_Follow_Up__mdt TestSetting {get;set;}

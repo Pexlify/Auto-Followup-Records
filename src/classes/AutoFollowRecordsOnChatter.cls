@@ -201,15 +201,22 @@ public  class AutoFollowRecordsOnChatter {
         } else {
             str_user_value = setting.Criteria_Field__c;
         }
-        if(setting.Operator__c == 'equals') {
+        result = doesStringConditionPass(setting.Operator__c, str_sobj_value, str_user_value);
+        return result;
+    }
+
+    @TestVisible
+    private Boolean doesStringConditionPass(String operator, String str_sobj_value, String str_user_value) {
+        Boolean result = false;
+        if(operator == 'equals') {
             result = str_sobj_value == str_user_value;
-        } else if(setting.Operator__c == 'not equals to'){
+        } else if(operator == 'not equals to'){
             result = str_sobj_value != str_user_value;
-        } else if(setting.Operator__c == 'contains'){
+        } else if(operator == 'contains'){
             result = str_sobj_value.contains(str_user_value);
-        } else if(setting.Operator__c == 'does not contain'){
+        } else if(operator == 'does not contain'){
             result = !str_sobj_value.contains(str_user_value);
-        } else if(setting.Operator__c == 'starts with'){
+        } else if(operator == 'starts with'){
             result = str_sobj_value.startsWith(str_user_value);
         } else {
             throw new FollowUpException('Inapplicable logic operation for String type');
@@ -238,17 +245,24 @@ public  class AutoFollowRecordsOnChatter {
             decimal_user_value = Decimal.valueOf(setting.Criteria_Field__c);
         }
         Decimal converted_decimal_sobj_value = decimal_sobj_value;
-        if(setting.Operator__c == 'equals') {
+        result = doesDecimalConditionPass(setting.Operator__c, converted_decimal_sobj_value, decimal_user_value);
+        return result;
+    }
+
+    @TestVisible
+    private Boolean doesDecimalConditionPass(String operator, Decimal converted_decimal_sobj_value, Decimal decimal_user_value) {
+        Boolean result = false;
+        if(operator == 'equals') {
             result = converted_decimal_sobj_value == decimal_user_value;
-        } else if(setting.Operator__c == 'not equals to'){
+        } else if(operator == 'not equals to'){
             result = converted_decimal_sobj_value != decimal_user_value;
-        } else if(setting.Operator__c == 'less then'){
+        } else if(operator == 'less then'){
             result = converted_decimal_sobj_value < decimal_user_value;
-        } else if(setting.Operator__c == 'greater then'){
+        } else if(operator == 'greater then'){
             result = converted_decimal_sobj_value > decimal_user_value;
-        } else if(setting.Operator__c == 'less or equal'){
+        } else if(operator == 'less or equal'){
             result = converted_decimal_sobj_value <= decimal_user_value;
-        } else if(setting.Operator__c == 'greater or equal'){
+        } else if(operator == 'greater or equal'){
             result = converted_decimal_sobj_value >= decimal_user_value;
         } else {
             throw new FollowUpException('Inapplicable logic operation for Decimal type');
@@ -256,5 +270,6 @@ public  class AutoFollowRecordsOnChatter {
         return result;
     }
 
+    @TestVisible
     private class FollowUpException extends Exception {}
 }
