@@ -1,5 +1,6 @@
 @isTest
 private class GroupUtilityTest {
+
     @isTest
     static void testIsUserGroupMemberUserIsAMember() {
         SetupTestData setup_data = new SetupTestData();
@@ -114,6 +115,46 @@ private class GroupUtilityTest {
             for(Id extracted_id : expected_ids) {
                 System.assertEquals(true, all_users_ids_in_groups.contains(extracted_id), 'User should be a member of Test_Group');
             }
+        }
+    }
+
+    @isTest
+    static void testGetIdByGroupDeveloperNameGroupExists() {
+        SetupTestData setup_data = new SetupTestData();
+        System.runAs(setup_data.TestUser){
+            setup_data.TestGroup = setup_data.createTestGroup('Test_Group');
+            Test.startTest();
+                Id actual_group_id = GroupUtility.getInstance().setQueryMode(false).getIdByGroupDeveloperName('Test_Group');
+            Test.stopTest();
+            System.assertEquals(setup_data.TestGroup.Id, actual_group_id, 'Incorrect Id of Group');
+        }
+    }
+
+    @isTest
+    static void testIsRegularGroupIsGroup() {
+        SetupTestData setup_data = new SetupTestData();
+        System.runAs(setup_data.TestUser){
+            setup_data.TestGroup = setup_data.createTestGroup('Test_Group');
+            Test.startTest();
+                Boolean actual_result = GroupUtility.getInstance().setQueryMode(false).isRegularGroup(setup_data.TestGroup.Id);
+            Test.stopTest();
+            System.assertEquals(true, actual_result, 'This is Regular Group');
+        }
+    }
+
+    @isTest
+    static void testIsRegularGroupIsNotGroup() {
+        SetupTestData setup_data = new SetupTestData();
+        System.runAs(setup_data.TestUser){
+            Group some_group = new Group();
+            some_group.Name = 'Some name';
+            some_group.DeveloperName = 'Some_name';
+            some_group.Type = 'Queue';
+            insert some_group;
+            Test.startTest();
+                Boolean actual_result = GroupUtility.getInstance().setQueryMode(false).isRegularGroup(some_group.Id);
+            Test.stopTest();
+            System.assertEquals(false, actual_result, 'This is not a Regular Group');
         }
     }
 

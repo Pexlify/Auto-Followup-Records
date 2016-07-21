@@ -119,8 +119,8 @@ public class SharingAccessChecker {
                 if(isIdAUserTypeId(user_group_id)) {
                     ShareWrapper wrapper = new ShareWrapper(record_id, user_group_id, access_level);
                     ShareObjects.add(wrapper);
-                } else {
-                    Set<Id> users_id = GroupUtility.getInstance().setQueryMode(true).getAllUsersIdFromGroupId(user_group_id);
+                } else if(GroupUtility.getInstance().setQueryMode(true).isRegularGroup(user_group_id)) {
+                    Set<Id> users_id = GroupUtility.getInstance().setQueryMode(false).getAllUsersIdFromGroupId(user_group_id);
                     for(Id user_id :users_id) {
                         ShareWrapper wrapper = new ShareWrapper(record_id, user_id, access_level);
                         ShareObjects.add(wrapper);

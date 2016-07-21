@@ -87,10 +87,12 @@ public class GroupUtility {
         String query = 'SELECT Id, Name, DeveloperName, Type, (SELECT UserOrGroupId FROM GroupMembers) FROM Group';
         if (is_group_only != null) {
             if(is_group_only) {
-                query +=' WHERE Type != \'Queue\'';
+                query +=' WHERE Type = \'Regular\'';
             } else {
                 query +=' WHERE Type = \'Queue\'';
             }
+        } else {
+             query +=' WHERE Type = \'Queue\' OR Type = \'Regular\'';
         }
         return Database.query(query);
     }
@@ -130,7 +132,7 @@ public class GroupUtility {
             for(GroupMember member: members) {
                 if(isIdAUserTypeId(member.UserOrGroupId)) {
                     result.add(member.UserOrGroupId);
-                } else {
+                } else if(OnlyGroupsById.containsKey(member.UserOrGroupId)) {
                     result.addAll(getAllUsersIdFromGroupId(member.UserOrGroupId));
                 }
             }
@@ -139,6 +141,22 @@ public class GroupUtility {
         }
         return result;
     }
+
+    public Id getIdByGroupDeveloperName(String dev_name){
+        Id result = null;
+        if(AllGroupsByDevName.containsKey(dev_name)) {
+            result = AllGroupsByDevName.get(dev_name).Id;
+        } else {
+            throw new GroupException('Group with '+dev_name+' DeveloperName doesn\'t exist');
+        }
+        return result;
+    }
+
+    public Boolean isRegularGroup(Id group_id){
+        populateOnlyGroupsById();
+        return OnlyGroupsById.containsKey(group_id);
+    }
+
 
     public class GroupException extends Exception {}
 }
